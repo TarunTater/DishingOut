@@ -1,0 +1,1008 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format pdf2
+\output_sync 1
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Recommending Favourable Dishes in nearby Restaurants
+\end_layout
+
+\begin_layout Author
+Tarun Tater(IMT2012047)
+\end_layout
+
+\begin_layout Section*
+Problem Statement
+\end_layout
+
+\begin_layout Standard
+Quite a few online services take user reviews and use them to provide better
+ services by taking in consideration the suggestions and comments in the
+ user reviews.
+ But there are many other things user reviews can do.
+ The user reviews are also being used to personalise the user's experience.
+ This project also aims to do something similar.
+ 
+\end_layout
+
+\begin_layout Standard
+Given a user's location(in Bangalore), the aim is to suggest a known favourable
+ dish to a user in a nearby restaurant given.
+ The dishes suggested are one of the dishes the user has already reviewed
+ before.
+ 
+\end_layout
+
+\begin_layout Section*
+Data Processing
+\end_layout
+
+\begin_layout Standard
+The data about the user reviews for dishes and restaurants were taken through
+ Zomato's API.
+ Zomato's API gives all user reviews for a particular restaurant in a city.
+ The project only targeted Bangalore.
+ So, a list of all restaurants in Bangalore was retrieved from the Zomato
+ API.
+ There were 7730 restaurants in total.
+ For each restaurant, there were a list of attributes related to it.
+ The attributes retrieved for each restaurant were:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+hasDelivery
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+hasBar
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+longitude
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+avgCostForTwo
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+smokingArea
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+latitude
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+hasDineIn
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+hasAC
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+cuisines
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+hasTakeAway
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+acceptsCreditCards
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+timings
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+isPureVeg
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+hasWifi
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+List of Attributes for Restaurants
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The data related to timings had different formats and had to be extensively
+ processed to bring it into a standardised format.
+ 
+\end_layout
+
+\begin_layout Standard
+Then, for each restaurant, all the user reviews were extracted.
+ The user reviews were filtered to cater to the need of the project.
+ Only those user reviews were used which had a dish name in them.
+ A list of dishes was compiled from different sources which served as the
+ database of dishes available.
+ 
+\end_layout
+
+\begin_layout Standard
+The user reviews were further processed by removing unwanted punctuations.
+ Now, the adjectives which are generally used to describe the dishes was
+ also compiled.
+ 
+\end_layout
+
+\begin_layout Section*
+Analysis of Dataset
+\end_layout
+
+\begin_layout Standard
+Each user review was shortened by identifying and keeping only sentences
+ which had opinions in them.
+ Each opinion was classified using a trained sentiment analyser for food
+ reviews.
+ A Naive Bayes classifier was used which gives a positive and negative rating
+ to a sentence.
+ These opinions were thus given a positive or negative tag with respective
+ probabilities.
+ 
+\end_layout
+
+\begin_layout Standard
+The opinions with their respective probabilities for positive sentiment
+ were chunked together for each user.
+ There were more than 80,000 users who have written reviews.
+ This rendered a json of each user having dish wise reviews and their probabilit
+ies for positive sentiments.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Algorithm
+\end_layout
+
+\begin_layout Standard
+For each user, the list of dishes he/she had commented upon were taken as
+ the dishes he/she would prefer to eat.
+ This seemed a reasonable assumption as the dishes considered were only
+ those which the user had eaten previously and was passionate enough to
+ write a review about it.
+ This may result in missing a few dishes but would never give a false positive.
+ 
+\end_layout
+
+\begin_layout Standard
+The number of reviews about a particular dish was also given importance
+ in deciding the favourable dish.
+ The idea was that if a user had reviewed a particular dish multiple times,
+ it was more likely that the user prefers this dish over another.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+def getPreferences(userId): 
+\end_layout
+
+\begin_layout Plain Layout
+#Getting user preferences from dishes reviews 
+\end_layout
+
+\begin_layout Plain Layout
+get all reviews for this userId.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+for dish in eachReview:
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+increment the score for the dish.
+ #Based on a metric
+\end_layout
+
+\begin_layout Plain Layout
+sort the dishes score in decreasing order
+\end_layout
+
+\begin_layout Plain Layout
+#the dish with the highest score is the most preferred dish.
+\end_layout
+
+\begin_layout Plain Layout
+return the top 
+\begin_inset Formula $n$
+\end_inset
+
+ dishes with their scores from the sorted list.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Retrieve Dishes Preferred By User
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The metric used to increment the score or evaluate the order of preferences
+ of dish can vary.
+ The metric used for this project is depends on the number of reviews a
+ user has given about a particular dish and the positive sentiment related
+ to each comment.
+ Taking the number of reviews about a dish by a user as 
+\begin_inset Formula $n$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $if\, n<3,\, score=average\, positive\, sentiment\, about\, dish\, given\, by\, user$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $if\, n\geq3\, and\, n\leq5,\, score=average\, positive\, sentiment+0.01*n$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $if\, n>5,\, score=average\, positive\, sentiment+0.02*n$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+def recommend(userId, distancePrefered, lat, lon, currentDay, currentTime):
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+feasibleRestaurants = [] 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+recommendations = [] 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+for eachRestaurant in restaurantsList: 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+check distance from current location
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+if distance from current location < distancePrefered:
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+if the restaurant is currently open:
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+append to feasibleRestaurants
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+dishesPrefered = getPreferences(userId)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+for eachRestaurant in feasibleRestaurants:
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+if any dish preferred by the user is served by the restaurant:
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+calculate the average positive sentiment of that dish in this restaurant
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+append this dish,restaurant and avg.
+ positive sentiment in recommendations
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+sort the recommendations in decreasing order of their positive sentiment
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+return the recommendations
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Recommend
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For a user, his/her preferred dishes are evaluated depending on his/her
+ previous reviews and based on the above mentioned metric.
+ Then, in the vicinity of user's location i.e., in a user given preferred
+ distance(radius), a search is made for all the restaurants using the Haversine
+ distance formula.
+ The restaurants in the vicinity are then checked if they are open at that
+ particular time on present day.
+ Now, all these open restaurants in the vicinity are checked if they serve
+ any of the dishes preferred by the user.
+ All such restaurants (where any of the preferred dishes are served) are
+ then ranked based on their average positive sentiment corresponding to
+ the preferred dish.
+ The top 10 results are displayed to the user.
+ 
+\end_layout
+
+\begin_layout Standard
+The user can put other constraints such as averagar cost, take away facility,
+ AC, vegetarian restaurant etc.
+ All the available options are mentioned in Table1.
+ 
+\end_layout
+
+\begin_layout Section*
+Result
+\end_layout
+
+\begin_layout Standard
+Although, there was no direct way to test the results.
+ The hope is that such a system would keep learning from user's behaviour
+ and improve over time.
+ Since, the dishes suggested are one of the dishes that the user has already
+ tried and commented upon.
+ It can be reasonably assumed that the user likes the dish.
+ And since the number of comments about a particular dish are also taken
+ into account, the suggested dish seems to be one of the favoured dishes
+ to a particular customer, if not the most favoured dish.
+ 
+\end_layout
+
+\begin_layout Standard
+The metric to evaluate preferred dishes can be changed depending on the
+ user's feedback.
+ Also, the restaurants can be filtered based on varying importance given
+ by a user to different attributes like AC, Wifi etc.
+ 
+\end_layout
+
+\end_body
+\end_document
